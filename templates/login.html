@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Iniciar Sesión</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Iniciar sesión</h2>
+
+    <form method="POST">
+        <label>Correo</label>
+        <input type="email" name="email" required>
+
+        <label>Contraseña</label>
+        <input type="password" name="password" required>
+
+        <button type="submit" class="btn-primary">Entrar</button>
+    </form>
+
+    <p>¿No tienes cuenta? <a href="/register">Registrarme</a></p>
+</div>
+
+</body>
+</html>

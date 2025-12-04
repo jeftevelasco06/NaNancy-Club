@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NaNancy Club</title>
+
+    <!-- FullCalendar -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet">
+
+    <!-- Tu CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <h2 class="sidebar-title">NaNancy Club</h2>
+
+        {% if current_user.is_authenticated %}
+            <p class="sidebar-email">👤 {{ current_user.email }}</p>
+            <a href="{{ url_for('logout') }}" class="btn-logout">Cerrar Sesión</a>
+        {% else %}
+            <a href="{{ url_for('login') }}" class="btn-login">Iniciar Sesión</a>
+            <a href="{{ url_for('register') }}" class="btn-register">Crear Cuenta</a>
+        {% endif %}
+
+        <hr>
+
+        <p class="sidebar-label">Contacto de Nancy:</p>
+
+        <a class="sidebar-link"
+           href="https://wa.me/{{ nanny_whatsapp }}"
+           target="_blank">📱 WhatsApp</a>
+
+        <a class="sidebar-link"
+           href="{{ nanny_instagram }}"
+           target="_blank">📸 Instagram</a>
+    </aside>
+
+    <!-- Contenido dinámico -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- FullCalendar JS -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js"></script>
+
+    <!-- Tu JS -->
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+
+</body>
+</html>

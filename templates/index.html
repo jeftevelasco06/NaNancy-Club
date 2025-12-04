@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nancy Club – Cuidados de Niños</title>
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <!-- Script para exponer el email del usuario autenticado -->
+    <script>
+        window.CURRENT_USER_EMAIL = "{{ current_user.email if current_user.is_authenticated else '' }}";
+    </script>
+
+    <!-- Navbar -->
+    <header class="navbar">
+        <nav>
+            <h1 class="logo">Nancy Club</h1>
+            <ul>
+                {% if current_user.is_authenticated %}
+                    <li><a href="/logout">Cerrar sesión</a></li>
+                {% else %}
+                    <li><a href="/login">Iniciar sesión</a></li>
+                    <li><a href="/register">Registrarme</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Cuidados profesionales para tus hijos</h2>
+            <p>Agenda tu cita fácil y rápido con Nancy.</p>
+
+            <button id="openModal" class="btn-primary">Agendar Cita</button>
+        </div>
+    </section>
+
+    <!-- Modal para agendar -->
+    <div id="bookingModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+
+            <h2>Agendar una cita</h2>
+
+            <form id="bookingForm">
+                <label>Nombre del padre o madre</label>
+                <input type="text" id="parent_name" required>
+
+                <label>Nombre del niño</label>
+                <input type="text" id="child_name" required>
+
+                <label>Edad del niño</label>
+                <input type="number" id="child_age" required>
+
+                <label>Fecha</label>
+                <input type="date" id="date" required>
+
+                <label>Hora</label>
+                <input type="time" id="time" required>
+
+                <label>Comentarios (opcional)</label>
+                <textarea id="comments"></textarea>
+
+                <button type="submit" class="btn-primary">Enviar solicitud</button>
+            </form>
+
+            <p class="msg-success hidden" id="successMsg">Tu cita fue enviada exitosamente.</p>
+        </div>
+    </div>
+
+    <!-- Redes -->
+    <footer class="footer">
+        <p>Contacto directo:</p>
+        <ul>
+            <li><a href="https://api.whatsapp.com/send?phone={{ nanny_whatsapp }}" target="_blank">WhatsApp</a></li>
+            <li><a href="{{ nanny_instagram }}" target="_blank">Instagram</a></li>
+            <li><a href="mailto:{{ nanny_email }}">Correo</a></li>
+        </ul>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+
+</body>
+</html>
