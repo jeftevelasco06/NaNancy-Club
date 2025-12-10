@@ -1,154 +1,77 @@
-/* ----------- GENERAL ----------- */
-
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #ffffff;
-    display: flex;
+:root{
+  --lavanda: #cab2d6;
+  --pastel: #AEC6CF;
+  --white: #ffffff;
+}
+body{
+  background: linear-gradient(180deg, var(--white), #f9f6fb);
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: #222;
+  min-height: 100vh;
+}
+.app-shell{ min-height:100vh; display:flex; flex-direction:column;}
+.topbar{
+  display:flex; justify-content:space-between; align-items:center;
+  padding:0.8rem 4rem; background:var(--lavanda); color:var(--white);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+.brand{ margin:0; font-size:1.5rem; font-weight:700;}
+.btn-experience{
+  background: transparent; color:var(--white); border:1px solid rgba(255,255,255,0.18);
+  padding:0.35rem 0.6rem; border-radius:12px;
+}
+.btn-hamburger {
+    background: transparent;
+    color: var(--white);
+    border: 0;
+    font-size: 1.4rem;
+    position: fixed;   
+    top: 0.5rem;         
+    right: 1rem;      
+    z-index: 1100;   
 }
 
-/* ----------- SIDEBAR ----------- */
+.desktop-links a{ color:var(--white); text-decoration:none; margin-right:0.5rem; }
 
-.sidebar {
-    width: 250px;
-    background: #cab2d6;
-    height: 100vh;
-    padding: 20px;
-    color: white;
-    position: fixed;
+.sidebar{
+  position:fixed; top:0; right:-340px; width:320px; height:100%;
+  background:linear-gradient(180deg,var(--lavanda),var(--pastel)); padding:1rem; transition:all .28s ease; z-index:999;
+  color:#fff; box-shadow: -8px 0 24px rgba(0,0,0,0.12);
+}
+.sidebar.open{ right:0; }
+.sidebar-header{ display:flex; justify-content:space-between; align-items:center; }
+.sidebar .profile-pic{ width:64px; height:64px; object-fit:cover; border-radius:50%; margin-right:0.6rem; border:3px solid rgba(255,255,255,0.2); }
+.sidebar .btn { border-radius:14px; }
+.btn-whatsapp{ background:#25D366; color:#fff; border:0;}
+.btn-instagram{ background:#E1306C; color:#fff; border:0;}
+.btn-email{ background:#6C5CE7; color:#fff; border:0;}
+
+.main-content{ padding:1.2rem; flex:1; }
+
+.profile-card{ background:var(--lavanda); color:#fff; border-radius:12px; }
+.profile-large{ width:96px; height:96px; object-fit:cover; border-radius:50%; border:4px solid #fff; }
+
+.card{ border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,0.06); }
+
+.auth-wrapper{ display:flex; justify-content:center; align-items:center; min-height:60vh; }
+.auth-card{ width:420px; background:var(--lavanda); color:#fff; border-radius:12px; }
+
+#calendar{ background:#fff; border-radius:10px; padding:10px; }
+
+.profile-pic{ width:56px; height:56px; border-radius:50%; object-fit:cover; }
+
+.btn-primary{
+  background:linear-gradient(90deg,#f6e9ff,var(--white));
+  color:#4b2b52; border:0; font-weight:600;
+}
+.btn-outline-light{
+  border:2px solid rgba(255,255,255,0.35); color:#fff; background:transparent;
 }
 
-.sidebar-title {
-    font-size: 22px;
-    font-weight: bold;
-}
+.flash-container{ position:fixed; top:76px; right:20px; z-index:1200; width:320px; }
 
-.sidebar-email {
-    margin-top: 10px;
-    font-size: 14px;
-}
+.reserve-badge{ background:#4b2b52; color:#fff; padding:4px 8px; border-radius:8px; font-weight:600; }
 
-.btn-login,
-.btn-register,
-.btn-logout {
-    display: block;
-    padding: 10px;
-    text-align: center;
-    margin-top: 10px;
-    border-radius: 6px;
-    text-decoration: none;
-    color: white;
-    background: #a78ab7;
-}
-
-/* Contacto */
-.sidebar-label {
-    margin-top: 20px;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-.sidebar-link {
-    display: block;
-    margin-top: 8px;
-    color: white;
-    text-decoration: none;
-}
-
-/* ----------- MAIN CONTENT ----------- */
-
-main {
-    margin-left: 270px;
-    padding: 30px;
-    max-width: 900px;
-}
-
-.title {
-    font-size: 32px;
-    font-weight: bold;
-}
-
-.highlight {
-    color: #cab2d6;
-}
-
-.subtitle {
-    margin-bottom: 20px;
-    font-size: 18px;
-}
-
-.section {
-    margin-top: 30px;
-}
-
-.section-title {
-    font-size: 22px;
-    margin-bottom: 10px;
-}
-
-/* Imagen redonda */
-.profile-img {
-    width: 180px;
-    height: 180px;
-    object-fit: cover;
-    border-radius: 50%;
-}
-
-/* Video */
-.video-container {
-    width: 100%;
-    max-height: 350px;
-    border-radius: 12px;
-}
-
-/* Calendario */
-#calendar {
-    margin-top: 20px;
-    background: white;
-    padding: 15px;
-    border-radius: 12px;
-}
-
-/* Botón central */
-.center-btn {
-    text-align: center;
-    margin-top: 25px;
-}
-
-.btn {
-    padding: 12px 20px;
-    background: #aec6cf;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    cursor: pointer;
-}
-
-/* ----------- MODAL ----------- */
-
-.modal.hidden {
-    display: none;
-}
-
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.5);
-}
-
-.modal-content {
-    background: white;
-    width: 350px;
-    padding: 20px;
-    border-radius: 12px;
-    margin: 120px auto;
-}
-
-.close {
-    float: right;
-    font-size: 26px;
-    cursor: pointer;
+@media (max-width: 768px){
+  .desktop-links{ display:none; }
 }

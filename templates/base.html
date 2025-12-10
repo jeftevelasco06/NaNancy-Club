@@ -1,54 +1,102 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NaNancy Club</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NaNancy Club</title>
 
-    <!-- FullCalendar -->
-    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet">
+  <!-- FullCalendar CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
 
-    <!-- Tu CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <!-- Bootstrap (para utilidades y modales) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
+  <!-- Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
 
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <h2 class="sidebar-title">NaNancy Club</h2>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="left">
+        <h1 class="brand">NaNancy Club</h1>
+      </div>
 
+      <div class="right">
+        <div class="desktop-links">
+          {% if current_user.is_authenticated %}
+            <a href="#" class="btn btn-sm btn-outline-light">Hola, {{ current_user.email }}</a>
+            <a href="{{ url_for('logout') }}" class="btn btn-sm btn-outline-light">Cerrar sesión</a>
+          {% else %}
+            <a href="{{ url_for('login') }}" class="btn btn-sm btn-outline-light">Iniciar sesión</a>
+            <a href="{{ url_for('register') }}" class="btn btn-sm btn-outline-light">Registrarse</a>
+          {% endif %}
+        </div>
+
+        <button class="btn btn-hamburger" id="hamburger"><i class="bi bi-list"></i></button>
+      </div>
+    </header>
+
+    <!-- Sidebar (hamburger) -->
+    <nav id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <h4>Menú</h4>
+        <button class="close-sidebar" id="close-sidebar">&times;</button>
+      </div>
+      <div class="sidebar-body">
         {% if current_user.is_authenticated %}
-            <p class="sidebar-email">👤 {{ current_user.email }}</p>
-            <a href="{{ url_for('logout') }}" class="btn-logout">Cerrar Sesión</a>
+          <div class="profile-block mb-3">
+            <img src="{{ url_for('static', filename='images/nanny_profile.jpg') }}" alt="Nancy" class="profile-pic">
+            <div>
+              <div class="fw-bold">Nancy Jacqueline Rodriguez Villegas</div>
+              <div class="small">Niñera — Zapopan & Guadalajara</div>
+              <div class="small">19 años</div>
+            </div>
+          </div>
+          <a class="btn btn-primary w-100 mb-2" href="#" id="my-bookings">Mis reservas</a>
+          <a class="btn btn-outline-light w-100 mb-2" href="{{ url_for('logout') }}">Cerrar sesión</a>
         {% else %}
-            <a href="{{ url_for('login') }}" class="btn-login">Iniciar Sesión</a>
-            <a href="{{ url_for('register') }}" class="btn-register">Crear Cuenta</a>
+          <a class="btn btn-primary w-100 mb-2" href="{{ url_for('login') }}">Iniciar sesión</a>
+          <a class="btn btn-outline-light w-100 mb-2" href="{{ url_for('register') }}">Registrarse</a>
         {% endif %}
+        <a class="btn btn-whatsapp w-100 mb-2" target="_blank" href="https://wa.me/{{ nanny_whatsapp }}">Chatear por WhatsApp</a>
+        <a class="btn btn-instagram w-100 mb-2" target="_blank" href="{{ nanny_instagram }}">Instagram</a>
+        <a class="btn btn-email w-100 mb-2" href="mailto:{{ config.get('NANNY_EMAIL') if config else '' }}">Enviar correo</a>
+      </div>
+    </nav>
 
-        <hr>
+    <main class="container-fluid main-content">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="flash-container">
+            {% for cat, msg in messages %}
+              <div class="alert alert-{{ 'success' if cat=='success' else ('danger' if cat=='danger' else 'info') }} alert-dismissible fade show" role="alert">
+                {{ msg }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
 
-        <p class="sidebar-label">Contacto de Nancy:</p>
-
-        <a class="sidebar-link"
-           href="https://wa.me/{{ nanny_whatsapp }}"
-           target="_blank">📱 WhatsApp</a>
-
-        <a class="sidebar-link"
-           href="{{ nanny_instagram }}"
-           target="_blank">📸 Instagram</a>
-    </aside>
-
-    <!-- Contenido dinámico -->
-    <main>
-        {% block content %}{% endblock %}
+      {% block content %}{% endblock %}
     </main>
 
-    <!-- FullCalendar JS -->
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js"></script>
+  </div>
 
-    <!-- Tu JS -->
-    <script src="{{ url_for('static', filename='main.js') }}"></script>
+  <!-- Experience modal content -->
+  {% include 'modal_experience.html' %}
 
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- FullCalendar -->
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
+  <script>
+    const NANNY_WHATSAPP = "{{ os.getenv('NANNY_WHATSAPP','') }}";
+  </script>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>
