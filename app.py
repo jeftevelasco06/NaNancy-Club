@@ -14,10 +14,16 @@ load_dotenv()
 app = Flask(__name__)
 app.jinja_env.globals['os'] = os
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'cambiame')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///nannyclub.db'
+db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "nannyclub.db")
+app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{db_path}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
+with app.app_context():
+    db.create_all()
+    print("Tablas creadas correctamente")
+
+
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
@@ -72,6 +78,10 @@ def send_email_to_nanny(subject, body):
     msg.set_content(body)
 
     try:
+        #print("DEBUG SMTP HOST:", smtp_host)
+        #print("DEBUG SMTP PORT:", smtp_port)
+        #print("DEBUG USERNAME:", username)
+        #print("DEBUG PASSWORD LENGTH:", len(password) if password else "NO PASSWORD")
         with smtplib.SMTP(smtp_host, smtp_port) as server:
             if use_tls:
                 server.starttls()
